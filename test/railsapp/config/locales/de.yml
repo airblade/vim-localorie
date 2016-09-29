@@ -1,0 +1,6 @@
+de:
+  books:
+    index:
+      title: Alle Bücher
+    create:
+      success: Buch!

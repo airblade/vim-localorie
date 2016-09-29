@@ -1,0 +1,6 @@
+en:
+  books:
+    index:
+      title: All books
+    create:
+      success: Book!
