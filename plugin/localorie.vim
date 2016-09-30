@@ -143,7 +143,7 @@ endfunction
 
 function! s:key_at_cursor() abort
   " Model.model_name.human
-  let list = matchlist(getline('.'), '\v([A-Z][a-z_]+)[.](model_name.human)')
+  let list = matchlist(getline('.'), '\v([A-Z][a-z_]+)[.]model_name[.]human')
   if !empty(list)
     let model = s:underscore(list[1])
     return 'activerecord.models.'.model
