@@ -179,3 +179,27 @@ function! Test_model_name_with_plural()
   call assert_equal('[de] other: Bücher', location.text)
 endfunction
 
+
+function! Test_human_attribute_name()
+  execute 'edit' s:railsapp.'/app/views/books/index.html.haml'
+  for line in [10, 11, 12, 13]
+    execute 'normal '.line.'G'
+
+    call localorie#translate()
+
+    let list = getqflist()
+    call assert_equal(2, len(list))
+
+    let location = list[0]
+    call assert_match('/config/locales/en.yml', bufname(location.bufnr))
+    call assert_equal(16, location.lnum)
+    call assert_equal('[en] Title', location.text)
+
+    let location = list[1]
+    call assert_match('/config/locales/de.yml', bufname(location.bufnr))
+    call assert_equal(16, location.lnum)
+    call assert_equal('[de] Titel', location.text)
+  endfor
+endfunction
+
+

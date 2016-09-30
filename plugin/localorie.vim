@@ -147,11 +147,19 @@ function! s:key_at_cursor() abort
   if !empty(list)
     let model = s:underscore(list[1])
     return 'activerecord.models.'.model
-  else
-    " controller or view
-    let key = s:get_ruby_string()
-    return s:fq_key(key)
   endif
+
+  " Model.human_attribute_name 'attr'
+  let list = matchlist(getline('.'), '\v([A-Z][a-z_]+)[.]human_attribute_name[ (][''"]([^''"]+)')
+  if !empty(list)
+    let model = s:underscore(list[1])
+    let attribute = list[2]
+    return 'activerecord.attributes.'.model.'.'.attribute
+  endif
+
+  " controller or view
+  let key = s:get_ruby_string()
+  return s:fq_key(key)
 endfunction
 
 function! s:get_ruby_string() abort

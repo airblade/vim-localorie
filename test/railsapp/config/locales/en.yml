@@ -11,3 +11,6 @@ en:
         one: Book
         other: Books
       table: Table
+    attributes:
+      book:
+        title: Title

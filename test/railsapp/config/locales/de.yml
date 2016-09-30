@@ -11,4 +11,6 @@ de:
         one: Buch
         other: Bücher
       table: Tisch
-
+    attributes:
+      book:
+        title: Titel

@@ -24,10 +24,10 @@ For example, with your cursor somewhere on `.title`:
 - Fully-qualified lookup in controllers
 - Lazy lookup in controllers
 - `Model.model_name.human`
+- `Model.human_attribute_name`
 
 #### Unsupported (so far)
 
-- `Model.human_attribute_name`
 - Sub/nested keys (e.g. `foo/bar`)
 - Symbol keys
 - `:scope` and `:default` options
