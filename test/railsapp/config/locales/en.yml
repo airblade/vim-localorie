@@ -4,3 +4,10 @@ en:
       title: All books
     create:
       success: Book!
+
+  activerecord:
+    models:
+      book:
+        one: Book
+        other: Books
+      table: Table

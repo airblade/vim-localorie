@@ -132,8 +132,16 @@ function! s:display(key, translations) abort
 endfunction
 
 function! s:key_at_cursor() abort
-  let key = s:get_ruby_string()
-  return s:fq_key(key)
+  " Model.model_name.human
+  let list = matchlist(getline('.'), '\v([A-Z][a-z_]+)[.](model_name.human)')
+  if !empty(list)
+    let model = s:underscore(list[1])
+    return 'activerecord.models.'.model
+  else
+    " controller or view
+    let key = s:get_ruby_string()
+    return s:fq_key(key)
+  endif
 endfunction
 
 function! s:get_ruby_string() abort
@@ -176,5 +184,24 @@ endfunction
 
 function! s:rails_root()
   return fnamemodify(findfile('Gemfile', '.;'), ':p:h')
+endfunction
+
+" https://github.com/tpope/vim-rails/blob/80e03f766f5f049d6bd8998bd7b25b77ddaa9a1e/autoload/rails.vim#L28-L30
+function! s:sub(str, pat, rep)
+  return substitute(a:str, '\v\C'.a:pat, a:rep, '')
+endfunction
+
+" https://github.com/tpope/vim-rails/blob/80e03f766f5f049d6bd8998bd7b25b77ddaa9a1e/autoload/rails.vim#L32-L34
+function! s:gsub(str, pat, rep)
+  return substitute(a:str, '\v\C'.a:pat, a:rep, 'g')
+endfunction
+
+" https://github.com/tpope/vim-rails/blob/80e03f766f5f049d6bd8998bd7b25b77ddaa9a1e/autoload/rails.vim#L543-L549
+function! s:underscore(str)
+  let str = s:gsub(a:str,'::','/')
+  let str = s:gsub(str,'(\u+)(\u\l)','\1_\2')
+  let str = s:gsub(str,'(\l|\d)(\u)','\1_\2')
+  let str = tolower(str)
+  return str
 endfunction
 

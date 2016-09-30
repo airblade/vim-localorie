@@ -4,3 +4,11 @@ de:
       title: Alle Bücher
     create:
       success: Buch!
+
+  activerecord:
+    models:
+      book:
+        one: Buck
+        other: Bücher
+      table: Tisch
+

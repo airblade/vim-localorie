@@ -128,3 +128,24 @@ function! Test_reloads_translations()
 endfunction
 
 
+function! Test_model_name_without_plural()
+  execute 'edit' s:railsapp.'/app/views/books/index.html.haml'
+  normal 7G
+
+  call localorie#translate()
+
+  let list = getqflist()
+  call assert_equal(2, len(list))
+
+  let location = list[0]
+  call assert_match('/config/locales/en.yml', bufname(location.bufnr))
+  call assert_equal(13, location.lnum)
+  call assert_equal('[en] Table', location.text)
+
+  let location = list[1]
+  call assert_match('/config/locales/de.yml', bufname(location.bufnr))
+  call assert_equal(13, location.lnum)
+  call assert_equal('[de] Tisch', location.text)
+endfunction
+
+
