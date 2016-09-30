@@ -19,6 +19,7 @@ For example, with your cursor somewhere on `.title`:
 #### Supported
 
 - String keys
+- Symbol keys
 - Fully-qualified lookup in views
 - Lazy lookup in views
 - Fully-qualified lookup in controllers
@@ -29,7 +30,6 @@ For example, with your cursor somewhere on `.title`:
 #### Unsupported (so far)
 
 - Sub/nested keys (e.g. `foo/bar`)
-- Symbol keys
 - `:scope` and `:default` options
 - Ruby locale files
 

@@ -1,6 +1,12 @@
 let s:railsapp = expand('%:p:h').'/'.'railsapp'
 
 
+function s:reset()
+  call setqflist([])
+  call setloclist(0, [])
+endfunction
+
+
 function Test_expand_key()
   execute 'edit' s:railsapp.'/config/locales/en.yml'
   normal 4G
@@ -224,7 +230,8 @@ endfunction
 
 function! Test_human_attribute_name()
   execute 'edit' s:railsapp.'/app/views/books/index.html.haml'
-  for line in [11, 12, 13, 14]
+  for line in [11, 12, 13, 14, 15, 16]
+    call s:reset()
     execute 'normal '.line.'G'
 
     call localorie#translate()

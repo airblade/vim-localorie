@@ -147,8 +147,8 @@ function! s:key_at_cursor() abort
     return 'activerecord.models.'.model
   endif
 
-  " Model.human_attribute_name 'attr'
-  let list = matchlist(getline('.'), '\v([A-Z][a-z_]+)[.]human_attribute_name[ (][''"]([^''"]+)')
+  " Model.human_attribute_name
+  let list = matchlist(getline('.'), '\v([A-Z][a-z_]+)[.]human_attribute_name[ (][''":]([^''")]+)')
   if !empty(list)
     let model = s:underscore(list[1])
     let attribute = list[2]
