@@ -120,24 +120,22 @@ endfunction
 function! s:display(key, translations) abort
   let qf = s:options.quickfix
 
+  if qf
+    call setqflist(a:translations)
+  else
+    call setloclist(0, a:translations)
+  endif
+
   if empty(a:translations)
     execute (qf ? 'cclose' : 'lclose')
     redraw
     echo "No translations for '".a:key."'."
-    return
-  endif
-
-  if qf
-    call setqflist(a:translations)
-    copen
   else
-    call setloclist(0, a:translations)
-    lopen
-  endif
-  let w:quickfix_title = a:key
-
-  if !s:options.switch
-    wincmd p
+    execute (qf ? 'copen' : 'lopen')
+    let w:quickfix_title = a:key
+    if !s:options.switch
+      wincmd p
+    endif
   endif
 endfunction
 
