@@ -88,11 +88,21 @@ function! s:translations_for_key(fq_key) abort
 
     if !miss
       " if has_key(dict, 'line')
-        call add(results, {
-              \   'filename': dict.file,
-              \   'lnum':     dict.line,
-              \   'text':     '['.locale.'] '.dict.value
-              \ })
+        if has_key(dict, 'file')  " exact translation
+          call add(results, {
+                \   'filename': dict.file,
+                \   'lnum':     dict.line,
+                \   'text':     '['.locale.'] '.dict.value
+                \ })
+        else  " pluralised model
+          for k in keys(dict)
+            call add(results, {
+                  \   'filename': dict[k].file,
+                  \   'lnum':     dict[k].line,
+                  \   'text':     '['.locale.'] '.k.': '.dict[k].value
+                  \ })
+          endfor
+        endif
       " else
         " " No line numbers available from ruby locale files.
         " call add(results, {

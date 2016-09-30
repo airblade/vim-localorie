@@ -8,7 +8,7 @@ de:
   activerecord:
     models:
       book:
-        one: Buck
+        one: Buch
         other: Bücher
       table: Tisch
 

@@ -23,10 +23,11 @@ For example, with your cursor somewhere on `.title`:
 - Lazy lookup in views
 - Fully-qualified lookup in controllers
 - Lazy lookup in controllers
+- `Model.model_name.human`
 
 #### Unsupported (so far)
 
-- Model translations
+- `Model.human_attribute_name`
 - Sub/nested keys (e.g. `foo/bar`)
 - Symbol keys
 - `:scope` and `:default` options

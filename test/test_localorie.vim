@@ -149,3 +149,33 @@ function! Test_model_name_without_plural()
 endfunction
 
 
+function! Test_model_name_with_plural()
+  execute 'edit' s:railsapp.'/app/views/books/index.html.haml'
+  normal 8G
+
+  call localorie#translate()
+
+  let list = getqflist()
+  call assert_equal(4, len(list))
+
+  let location = list[0]
+  call assert_match('/config/locales/en.yml', bufname(location.bufnr))
+  call assert_equal(11, location.lnum)
+  call assert_equal('[en] one: Book', location.text)
+
+  let location = list[1]
+  call assert_match('/config/locales/en.yml', bufname(location.bufnr))
+  call assert_equal(12, location.lnum)
+  call assert_equal('[en] other: Books', location.text)
+
+  let location = list[2]
+  call assert_match('/config/locales/de.yml', bufname(location.bufnr))
+  call assert_equal(11, location.lnum)
+  call assert_equal('[de] one: Buch', location.text)
+
+  let location = list[3]
+  call assert_match('/config/locales/de.yml', bufname(location.bufnr))
+  call assert_equal(12, location.lnum)
+  call assert_equal('[de] other: Bücher', location.text)
+endfunction
+
