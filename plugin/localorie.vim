@@ -168,13 +168,13 @@ function! s:fq_key(key) abort
 
   let scope = expand('%:p:r')
   if scope =~ '\v[\/]app[\/]views[\/]'
-    let scope = substitute(scope, '\v^.*[\/]app[\/]views[\/]', '',  '')
-    let scope = substitute(scope, '\v\.[^\/]+$',               '',  '')
-    let scope = substitute(scope, '\v[\/]_?',                 '.', 'g')
+    let scope = s:sub(scope, '\v^.*[\/]app[\/]views[\/]', '')
+    let scope = s:sub(scope, '\v\.[^\/]+$',               '')
+    let scope = s:gsub(scope, '\v[\/]_?',                 '.')
 
   elseif scope =~ '\v[\/]app[\/]controllers[\/]'
-    let scope = substitute(scope, '\v^.*[\/]app[\/]controllers[\/]', '', '')
-    let scope = substitute(scope, '\v_controller$', '',  '')
+    let scope = s:sub(scope, '\v^.*[\/]app[\/]controllers[\/]', '')
+    let scope = s:sub(scope, '\v_controller$', '')
     let action = matchstr(getline(search('\v^\s*def \w+$', 'bn')), '\v\w+$')
     let scope .= '.'.action
   endif
