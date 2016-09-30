@@ -175,6 +175,9 @@ function! s:get_ruby_symbol() abort
 endfunction
 
 function! s:get_ruby_string() abort
+  " This one-liner should do it but I can't get \%# to work at all.
+  " return matchstr(getline('.'), '\v[''"](\w*\%#\w*)[''"]')
+
   let col = col('.')
 
   call search('\v[''"]', 'b', line('.'))
