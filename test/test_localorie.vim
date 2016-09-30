@@ -38,9 +38,51 @@ function Test_translate_fq_key_view()
 endfunction
 
 
+function Test_translate_symbol_key_view()
+  execute 'edit' s:railsapp.'/app/views/books/index.html.haml'
+  normal 3Gff
+
+  call localorie#translate()
+
+  let list = getqflist()
+  call assert_equal(2, len(list))
+
+  let location = list[0]
+  call assert_match('/config/locales/en.yml', bufname(location.bufnr))
+  call assert_equal(18, location.lnum)
+  call assert_equal('[en] Bar', location.text)
+
+  let location = list[1]
+  call assert_match('/config/locales/de.yml', bufname(location.bufnr))
+  call assert_equal(18, location.lnum)
+  call assert_equal('[de] Qux', location.text)
+endfunction
+
+
+function Test_translate_symbol_key_controller()
+  execute 'edit' s:railsapp.'/app/controllers/books_controller.rb'
+  normal 5G^
+
+  call localorie#translate()
+
+  let list = getqflist()
+  call assert_equal(2, len(list))
+
+  let location = list[0]
+  call assert_match('/config/locales/en.yml', bufname(location.bufnr))
+  call assert_equal(18, location.lnum)
+  call assert_equal('[en] Bar', location.text)
+
+  let location = list[1]
+  call assert_match('/config/locales/de.yml', bufname(location.bufnr))
+  call assert_equal(18, location.lnum)
+  call assert_equal('[de] Qux', location.text)
+endfunction
+
+
 function Test_translate_lazy_key_view()
   execute 'edit' s:railsapp.'/app/views/books/index.html.haml'
-  for line in [4, 5]
+  for line in [5, 6]
     execute 'normal '.line.'Gfi'
 
     call localorie#translate()
@@ -130,7 +172,7 @@ endfunction
 
 function! Test_model_name_without_plural()
   execute 'edit' s:railsapp.'/app/views/books/index.html.haml'
-  normal 7G
+  normal 8G
 
   call localorie#translate()
 
@@ -151,7 +193,7 @@ endfunction
 
 function! Test_model_name_with_plural()
   execute 'edit' s:railsapp.'/app/views/books/index.html.haml'
-  normal 8G
+  normal 9G
 
   call localorie#translate()
 
@@ -182,7 +224,7 @@ endfunction
 
 function! Test_human_attribute_name()
   execute 'edit' s:railsapp.'/app/views/books/index.html.haml'
-  for line in [10, 11, 12, 13]
+  for line in [11, 12, 13, 14]
     execute 'normal '.line.'G'
 
     call localorie#translate()

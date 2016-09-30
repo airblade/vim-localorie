@@ -14,3 +14,5 @@ en:
     attributes:
       book:
         title: Title
+
+  foo: Bar

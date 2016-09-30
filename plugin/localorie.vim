@@ -155,9 +155,23 @@ function! s:key_at_cursor() abort
     return 'activerecord.attributes.'.model.'.'.attribute
   endif
 
-  " controller or view
-  let key = s:get_ruby_string()
-  return s:fq_key(key)
+  " Controller or View
+  let symbol_key = s:get_ruby_symbol()
+  if !empty(symbol_key)
+    return symbol_key
+  else
+    let key = s:get_ruby_string()
+    return s:fq_key(key)
+  endif
+endfunction
+
+function! s:get_ruby_symbol() abort
+  let word = expand('<cword>')  " Fragile: depends on 'iskeyword' option.
+  if match(getline('.'), ':'.word) != -1
+    return word
+  endif
+
+  return ''
 endfunction
 
 function! s:get_ruby_string() abort
