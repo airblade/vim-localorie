@@ -14,5 +14,7 @@ en:
     attributes:
       book:
         title: Title
+      table:
+        leg: Leg
 
   foo: Bar

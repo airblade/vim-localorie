@@ -18,8 +18,6 @@ For example, with your cursor somewhere on `.title`:
 
 #### Supported
 
-- String keys
-- Symbol keys
 - Fully-qualified lookup in views
 - Lazy lookup in views
 - Fully-qualified lookup in controllers

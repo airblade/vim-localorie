@@ -141,53 +141,58 @@ endfunction
 
 function! s:key_at_cursor() abort
   " Model.model_name.human
-  let list = matchlist(getline('.'), '\v([A-Z][a-z_]+)[.]model_name[.]human')
-  if !empty(list)
-    let model = s:underscore(list[1])
-    return 'activerecord.models.'.model
+  let re = '\v([A-Z][a-z_]+)[.]model_name[.]human'
+  let key = s:match_at_cursor(re, {matchlist ->
+        \ 'activerecord.models.'.s:underscore(matchlist[1])})
+  if !empty(key)
+    return key
   endif
 
-  " Model.human_attribute_name
-  let list = matchlist(getline('.'), '\v([A-Z][a-z_]+)[.]human_attribute_name[ (][''":]([^''")]+)')
-  if !empty(list)
-    let model = s:underscore(list[1])
-    let attribute = list[2]
-    return 'activerecord.attributes.'.model.'.'.attribute
+  " Model.human_attribute_name attr
+  let re = '\v([A-Z][a-z_]+)[.]human_attribute_name[ (][''":](\k+)[''"]?[)]?'
+  let key = s:match_at_cursor(re, {matchlist ->
+        \ 'activerecord.attributes.'.s:underscore(matchlist[1]).'.'.matchlist[2]})
+  if !empty(key)
+    return key
   endif
 
-  " Controller or View
-  let symbol_key = s:get_ruby_symbol()
-  if !empty(symbol_key)
-    return symbol_key
-  else
-    let key = s:get_ruby_string()
-    return s:fq_key(key)
+  " General keys
+
+  " Symbol
+  let re = '\v:(\k+)'
+  let key = s:match_at_cursor(re, {matchlist -> matchlist[1]})
+  if !empty(key)
+    return key
+  endif
+
+  " String
+  let re = '\v[''"](.{-})[''"]'
+  let key = s:match_at_cursor(re, {matchlist -> s:fq_key(matchlist[1])})
+  if !empty(key)
+    return key
   endif
 endfunction
 
-function! s:get_ruby_symbol() abort
-  let word = expand('<cword>')  " Fragile: depends on 'iskeyword' option.
-  if match(getline('.'), ':'.word) != -1
-    return word
-  endif
+function! s:match_at_cursor(re, func)
+  let col = getpos('.')[2]
+  let line = getline('.')
+  let start = 1
 
-  return ''
-endfunction
+  while 1
+    let match = matchstrpos(line, a:re, start)
 
-function! s:get_ruby_string() abort
-  " This one-liner should do it but I can't get \%# to work at all.
-  " return matchstr(getline('.'), '\v[''"](\w*\%#\w*)[''"]')
+    if match == ['', -1, -1]
+      return ''
+    end
 
-  let col = col('.')
+    let [first, last] = match[1:2]
+    if first < col && col <= last
+      let list = matchlist(line, a:re, first)
+      return a:func(list)
+    end
 
-  call search('\v[''"]', 'b', line('.'))
-  let open_quote = getpos('.')[2]
-  call search('\v[''"]',  '', line('.'))
-  let close_quote = getpos('.')[2]
-
-  execute 'normal! '.col.'|'
-
-  return strpart(getline('.'), open_quote, close_quote - open_quote - 1)
+    let start = last
+  endwhile
 endfunction
 
 function! s:fq_key(key) abort

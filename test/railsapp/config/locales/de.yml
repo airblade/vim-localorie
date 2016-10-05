@@ -14,5 +14,7 @@ de:
     attributes:
       book:
         title: Titel
+      table:
+        leg: Tischbein
 
   foo: Qux
