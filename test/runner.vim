@@ -13,7 +13,7 @@ function RunTest(test)
   try
     execute 'call '.a:test
   catch
-    call add(v:errors, 'Exception: '.v:exception.' @ '.v:throwpoint)
+    call Exception()
     let s:errored = 1
   endtry
 
@@ -33,7 +33,18 @@ function Log(msg)
 endfunction
 
 function Debug(msg)
-  call add(v:errors, a:msg)
+  if type(a:msg) == type('')
+    call add(v:errors, a:msg)
+  elseif type(a:msg) == type([])
+    call extend(v:errors, a:msg)
+  else
+    call add(v:errors, 'Exception: unsupported type: '.type(a:msg))
+  endif
+endfunction
+
+function Exception()
+  call Debug('Exception: '.v:exception)
+  call Debug(map(split(v:throwpoint, '\.\.'), '"  ".v:val'))
 endfunction
 
 " Shuffles list in place.
@@ -73,7 +84,7 @@ try
   source %
 catch
   let s:errors += 1
-  call Log('Exception: '.v:exception.' @ '.v:throwpoint)
+  call Exception()
 endtry
 
 " Locate the test functions.
@@ -104,7 +115,7 @@ for test in Shuffle(s:tests)
       let s:fail += 1
     endif
     call Log('not ok - '.friendly_name)
-    call Log(map(v:errors, '"       # ".v:val'))
+    call Log(map(v:errors, '"           ".v:val'))
     let v:errors = []
   endif
 endfor
