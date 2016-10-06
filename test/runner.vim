@@ -2,7 +2,7 @@
 " Adapted from https://github.com/vim/vim/blob/master/src/testdir/runtest.vim
 "
 " When debugging tests it can help to write debug output:
-"    call Debug('oh noes')
+"    call Log('oh noes')
 "
 
 function RunTest(test)
@@ -32,19 +32,8 @@ function Log(msg)
   endif
 endfunction
 
-function Debug(msg)
-  if type(a:msg) == type('')
-    call add(v:errors, a:msg)
-  elseif type(a:msg) == type([])
-    call extend(v:errors, a:msg)
-  else
-    call add(v:errors, 'Exception: unsupported type: '.type(a:msg))
-  endif
-endfunction
-
 function Exception()
-  call Debug('Exception: '.v:exception)
-  call Debug(map(split(v:throwpoint, '\.\.'), '"  ".v:val'))
+  call add(v:errors, v:throwpoint.'..'.'Exception: '.v:exception)
 endfunction
 
 " Shuffles list in place.
@@ -70,12 +59,33 @@ function Random(min, max)
   return i * (a:max - a:min + 1) / 32768 + a:min
 endfunction
 
+function FriendlyName(test_name)
+  return substitute(a:test_name[5:-3], '_', ' ', 'g')
+endfunction
+
+function Align(left, right)
+  if type(a:right) == type([])
+    let result = []
+    for s in a:right
+      if empty(result)
+        call add(result, printf('%-'.s:indent.'S', a:left).s)
+      else
+        call add(result, printf('%-'.s:indent.'S',     '').s)
+      endif
+    endfor
+    return result
+  endif
+
+  return printf('%-'.s:indent.'S', a:left).a:right
+endfunction
+
 let g:testname = expand('%')
 let s:errored = 0
 let s:done = 0
 let s:fail = 0
 let s:errors = 0
 let s:messages = []
+let s:indent = ''
 
 call Log(g:testname.':')
 
@@ -99,14 +109,16 @@ if argc() > 1
   let s:tests = filter(s:tests, 'v:val =~ argv(1)')
 endif
 
+let s:indent = max(map(copy(s:tests), {_, val -> len(FriendlyName(val))}))
+
 " Run the tests in random order.
 for test in Shuffle(s:tests)
   call RunTest(test)
   let s:done += 1
 
-  let friendly_name = substitute(test[5:-3], '_', ' ', 'g')
+  let friendly_name = FriendlyName(test)
   if len(v:errors) == 0
-    call Log('ok     - '.friendly_name)
+    call Log(Align(friendly_name, ' - ok'))
   else
     if s:errored
       let s:errors += 1
@@ -114,8 +126,19 @@ for test in Shuffle(s:tests)
     else
       let s:fail += 1
     endif
-    call Log('not ok - '.friendly_name)
-    call Log(map(v:errors, '"           ".v:val'))
+    call Log(Align(friendly_name, ' - not ok'))
+
+    let i = 0
+    for error in v:errors
+      if i != 0
+        call Log(Align('','   ! ----'))
+      endif
+      for trace in reverse(split(error, '\.\.'))
+        call Log(Align('', '   ! '.trace))
+      endfor
+      let i += 1
+    endfor
+
     let v:errors = []
   endif
 endfor
