@@ -23,7 +23,13 @@ function RunTest(test)
 endfunction
 
 function Log(msg)
-  call add(s:messages, a:msg)
+  if type(a:msg) == type('')
+    call add(s:messages, a:msg)
+  elseif type(a:msg) == type([])
+    call extend(s:messages, a:msg)
+  else
+    call add(v:errors, 'Exception: unsupported type: '.type(a:msg))
+  endif
 endfunction
 
 function Debug(msg)
@@ -98,7 +104,7 @@ for test in Shuffle(s:tests)
       let s:fail += 1
     endif
     call Log('not ok - '.friendly_name)
-    call Log(join(map(v:errors, '"       # ".v:val'), "\n"))
+    call Log(map(v:errors, '"       # ".v:val'))
     let v:errors = []
   endif
 endfor
