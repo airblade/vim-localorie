@@ -141,36 +141,21 @@ endfunction
 
 function! s:key_at_cursor() abort
   " Model.model_name.human
-  let re = '\v([A-Z][a-z_]+)[.]model_name[.]human'
-  let key = s:match_at_cursor(re, {matchlist ->
-        \ 'activerecord.models.'.s:underscore(matchlist[1])})
-  if !empty(key)
-    return key
-  endif
-
   " Model.human_attribute_name attr
-  let re = '\v([A-Z][a-z_]+)[.]human_attribute_name[ (][''":](\k+)[''"]?[)]?'
-  let key = s:match_at_cursor(re, {matchlist ->
-        \ 'activerecord.attributes.'.s:underscore(matchlist[1]).'.'.matchlist[2]})
-  if !empty(key)
-    return key
-  endif
-
-  " General keys
-
   " Symbol
-  let re = '\v:(\k+)'
-  let key = s:match_at_cursor(re, {matchlist -> matchlist[1]})
-  if !empty(key)
-    return key
-  endif
-
   " String
-  let re = '\v[''"](.{-})[''"]'
-  let key = s:match_at_cursor(re, {matchlist -> s:fq_key(matchlist[1])})
-  if !empty(key)
-    return key
-  endif
+  let patterns = [
+        \   ['\v([A-Z][a-z_]+)[.]model_name[.]human',                            {matchlist -> 'activerecord.models.'.s:underscore(matchlist[1])}],
+        \   ['\v([A-Z][a-z_]+)[.]human_attribute_name[ (][''":](\k+)[''"]?[)]?', {matchlist -> 'activerecord.attributes.'.s:underscore(matchlist[1]).'.'.matchlist[2]}],
+        \   ['\v:(\k+)',           {matchlist ->          matchlist[1]}],
+        \   ['\v[''"](.{-})[''"]', {matchlist -> s:fq_key(matchlist[1])}]
+        \ ]
+  for [re, L] in patterns
+    let key = s:match_at_cursor(re, L)
+    if !empty(key)
+      return key
+    endif
+  endfor
 endfunction
 
 function! s:match_at_cursor(re, func)
