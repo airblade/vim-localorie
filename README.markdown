@@ -27,7 +27,6 @@ For example, with your cursor somewhere on `.title`:
 
 #### Unsupported (so far)
 
-- Sub/nested keys (e.g. `foo/bar`)
 - `:scope` and `:default` options
 - Ruby locale files
 
