@@ -28,6 +28,7 @@ For example, with your cursor somewhere on `.title`:
 #### Unsupported (so far)
 
 - `:scope` and `:default` options
+- Localisation keys.
 - Ruby locale files
 
 It would also be nice, in a locale file, to look up locations where a key is used.
