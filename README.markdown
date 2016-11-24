@@ -7,6 +7,8 @@ Localorie is a Vim plugin which makes working with Rails i18n locale files a lit
 
 With your cursor on an i18n key in a Rails view or controller, call `localorie#translate()` to populate the quickfix or location list with all the translations of that key.
 
+If there is only one key in a line, your cursor doesn't need to be on the key to look up its translations - it can be anywhere in the line.
+
 For example, with your cursor somewhere on `.title`:
 
 ```erb

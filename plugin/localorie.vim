@@ -28,9 +28,11 @@ augroup END
 
 " Public functions
 
-" Loads translations for the key at the cursor into the quickfix or location list.
+" Loads translations for the key into the quickfix or location list.
+" The code first looks for a key at the cursor position; if none is found
+" it looks for a key anywhere on the line.
 function! localorie#translate() abort
-  let fq_key = s:key_at_cursor()
+  let fq_key = s:key()
   if !empty(fq_key)
     let translations = s:translations_for_key(fq_key)
     call s:display(fq_key, translations)
@@ -139,7 +141,7 @@ function! s:display(key, translations) abort
   endif
 endfunction
 
-function! s:key_at_cursor() abort
+function! s:key() abort
   " Model.model_name.human
   " Model.human_attribute_name attr
   " Symbol
@@ -150,15 +152,17 @@ function! s:key_at_cursor() abort
         \   ['\v:(\k+)',           {matchlist ->          matchlist[1]}],
         \   ['\v[''"](.{-})[''"]', {matchlist -> s:fq_key(matchlist[1])}]
         \ ]
-  for [re, L] in patterns
-    let key = s:match_at_cursor(re, L)
-    if !empty(key)
-      return key
-    endif
+  for match_at_cursor in [1, 0]
+    for [re, L] in patterns
+      let key = s:match(re, L, match_at_cursor)
+      if !empty(key)
+        return key
+      endif
+    endfor
   endfor
 endfunction
 
-function! s:match_at_cursor(re, func)
+function! s:match(re, func, match_at_cursor)
   let col = getpos('.')[2]
   let line = getline('.')
   let start = 1
@@ -171,6 +175,12 @@ function! s:match_at_cursor(re, func)
     end
 
     let [first, last] = match[1:2]
+
+    if !a:match_at_cursor
+      let list = matchlist(line, a:re, first)
+      return a:func(list)
+    endif
+
     if first < col && col <= last
       let list = matchlist(line, a:re, first)
       return a:func(list)

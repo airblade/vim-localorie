@@ -188,6 +188,15 @@ function! Test_multiple_matches_on_line()
 endfunction
 
 
+function! Test_fallback_to_match_anywhere()
+  execute 'edit' s:railsapp.'/app/views/books/index.html.haml'
+
+  normal 9G^
+  call localorie#translate()
+  call s:assert_model_name()
+endfunction
+
+
 function! s:assert_all_books()
   let list = getqflist()
   call assert_equal(2, len(list))
