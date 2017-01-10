@@ -165,7 +165,7 @@ endfunction
 function! s:match(re, func, match_at_cursor)
   let col = getpos('.')[2]
   let line = getline('.')
-  let start = 1
+  let start = 0
 
   while 1
     let match = matchstrpos(line, a:re, start)
