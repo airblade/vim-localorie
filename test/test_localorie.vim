@@ -197,6 +197,15 @@ function! Test_fallback_to_match_anywhere()
 endfunction
 
 
+function! Test_key_inside_a_larger_string()
+  execute 'edit' s:railsapp.'/app/views/books/index.html.haml'
+
+  normal G^
+  call localorie#translate()
+  call s:assert_all_books()
+endfunction
+
+
 function! s:assert_all_books()
   let list = getqflist()
   call assert_equal(2, len(list))

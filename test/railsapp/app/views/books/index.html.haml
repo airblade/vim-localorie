@@ -17,5 +17,6 @@
 
 = Table.model_name.human ... Book.model_name.human
 = Book.human_attribute_name :title ... Table.human_attribute_name :leg
-= Book.human_attribute_name :title ... 'books.index.title'
+= Book.human_attribute_name :title ... t 'books.index.title'
 
+= "#{I18n.t '.title', count: 2}"

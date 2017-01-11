@@ -1,7 +1,7 @@
 class BooksController < ApplicationController
   def create
-    'books.create.success'
-    '.success'
-    :foo
+    t 'books.create.success'
+    t '.success'
+    t :foo
   end
 end
