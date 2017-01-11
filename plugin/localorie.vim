@@ -148,11 +148,11 @@ function! s:key() abort
   " Symbol
   " String
   let patterns = [
-        \   ['\v([A-Z][a-z_]+)[.]model_name[.]human',                            {matchlist -> 'activerecord.models.'.s:underscore(matchlist[1])}],
+        \   ['\v([A-Z][a-z_]+)[.]model_name[.]human',                         {matchlist ->     'activerecord.models.'.s:underscore(matchlist[1])}],
         \   ['\v([A-Z][a-z_]+)[.]human_attribute_name[ (][:](\k+)[)]?',       {matchlist -> 'activerecord.attributes.'.s:underscore(matchlist[1]).'.'.matchlist[2]}],
         \   ['\v([A-Z][a-z_]+)[.]human_attribute_name[ (]([''"])(\k+)\2[)]?', {matchlist -> 'activerecord.attributes.'.s:underscore(matchlist[1]).'.'.matchlist[3]}],
-        \   ['\v:(\k+)',           {matchlist ->          matchlist[1]}],
-        \   ['\v([''"])(.{-})\1',  {matchlist -> s:fq_key(matchlist[2])}]
+        \   ['\v:(\k+)',          {matchlist ->          matchlist[1]}],
+        \   ['\v([''"])(.{-})\1', {matchlist -> s:fq_key(matchlist[2])}]
         \ ]
   for match_at_cursor in [1, 0]
     for [re, L] in patterns
