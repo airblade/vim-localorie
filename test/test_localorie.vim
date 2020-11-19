@@ -14,7 +14,7 @@ endfunction
 
 
 function Test_merge()
-  let sid = matchstr(execute('filter localorie/yaml.vim scriptnames'), '\d\+')
+  let sid = matchstr(execute('filter autoload/localorie.vim scriptnames'), '\d\+')
   let Merge = function("<SNR>".sid."_merge")
 
   call assert_equal({},                     call(Merge, [{},             {}]))
@@ -26,8 +26,13 @@ endfunction
 
 
 function Test_yaml_parse()
+  call localorie#expand_key()  " force vim to autoload
+
+  let sid = matchstr(execute('filter autoload/localorie.vim scriptnames'), '\d\+')
+  let ParseYaml = function("<SNR>".sid."_parse_yaml")
+
   let expected = json_decode(join(readfile(s:testdir.'/en.json'),"\n"))
-  let actual = localorie#yaml#parse(s:railsapp.'/config/locales/en.yml')
+  let actual = call(ParseYaml, [s:railsapp.'/config/locales/en.yml'])
   call assert_equal(expected, expected)
 endfunction
 
@@ -35,14 +40,7 @@ endfunction
 function Test_expand_key()
   execute 'edit' s:railsapp.'/config/locales/en.yml'
   normal 4G
-
-  redir => msg
-    call localorie#expand_key()
-  redir END
-  " Drop leading new line which is an artifact of redir.
-  let msg = substitute(msg, "\n", '', '')
-
-  call assert_equal('en.books.index.title', msg)
+  call assert_equal('en.books.index.title', localorie#expand_key())
 endfunction
 
 
