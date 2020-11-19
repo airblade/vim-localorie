@@ -146,5 +146,5 @@ See `:help add-global-plugin`.
 
 ### Intellectual Property
 
-Copyright 2016 Andrew Stewart.  Released under the MIT licence.
+Copyright 2016-2020 Andrew Stewart.  Released under the MIT licence.
 
