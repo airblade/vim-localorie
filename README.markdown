@@ -62,6 +62,15 @@ nnoremap <silent> <leader>le :echo localorie#expand_key()<CR>
 ```
 
 
+### Autocommands
+
+Add this autocommand to your vimrc to always see the fully qualified key of the current line:
+
+```viml
+autocmd CursorMoved *.yml echo localorie#expand_key()
+```
+
+
 ### Configuration
 
 By default vim-localorie uses the quickfix list but doesn't switch to the quickfix window.  To use the location list and/or switch to the new window, put this in your vimrc:
