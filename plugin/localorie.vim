@@ -62,9 +62,7 @@ endfunction
 " Private functions
 
 function! s:load_translations() abort
-  let rb = s:lib_dir.'/'.'localorie.rb'
-  let translations = system('ruby '.rb.' '.s:rails_root())
-  let s:translations = json_decode(translations)
+  let s:translations = localorie#yaml#load_files()
 endfunction
 
 function! s:translations_for_key(fq_key) abort
@@ -215,10 +213,6 @@ function! s:fq_key(key) abort
   endif
 
   return scope.a:key
-endfunction
-
-function! s:rails_root()
-  return fnamemodify(findfile('Gemfile', '.;'), ':p:h')
 endfunction
 
 " https://github.com/tpope/vim-rails/blob/80e03f766f5f049d6bd8998bd7b25b77ddaa9a1e/autoload/rails.vim#L28-L30

@@ -1,4 +1,5 @@
-let s:railsapp = expand('%:p:h').'/'.'railsapp'
+let s:testdir = expand('%:p:h')
+let s:railsapp = s:testdir.'/'.'railsapp'
 
 
 function s:reset()
@@ -9,6 +10,25 @@ endfunction
 
 function SetUp()
   call s:reset()
+endfunction
+
+
+function Test_merge()
+  let sid = matchstr(execute('filter localorie/yaml.vim scriptnames'), '\d\+')
+  let Merge = function("<SNR>".sid."_merge")
+
+  call assert_equal({},                     call(Merge, [{},             {}]))
+  call assert_equal({'a':42},               call(Merge, [{'a':42},       {}]))
+  call assert_equal({'a':42},               call(Merge, [{},             {'a':42}]))
+  call assert_equal({'a':42,'b':153},       call(Merge, [{'b':153},      {'a':42}]))
+  call assert_equal({'a':{'x':42,'y':153}}, call(Merge, [{'a':{'x':42}}, {'a':{'y':153}}]))
+endfunction
+
+
+function Test_yaml_parse()
+  let expected = json_decode(join(readfile(s:testdir.'/en.json'),"\n"))
+  let actual = localorie#yaml#parse(s:railsapp.'/config/locales/en.yml')
+  call assert_equal(expected, expected)
 endfunction
 
 

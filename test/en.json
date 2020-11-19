@@ -1,0 +1,62 @@
+{
+  "en": {
+    "foo": {
+      "file": "/Users/andy/code/src/vim-localorie/test/railsapp/config/locales/en.yml",
+      "line": 20,
+      "value": "Bar"
+    },
+    "books": {
+      "index": {
+        "title": {
+          "file": "/Users/andy/code/src/vim-localorie/test/railsapp/config/locales/en.yml",
+          "line": 4,
+          "value": "All books"
+        }
+      },
+      "create": {
+        "success": {
+          "file": "/Users/andy/code/src/vim-localorie/test/railsapp/config/locales/en.yml",
+          "line": 6,
+          "value": "Book!"
+        }
+      }
+    },
+    "activerecord": {
+      "models": {
+        "table": {
+          "file": "/Users/andy/code/src/vim-localorie/test/railsapp/config/locales/en.yml",
+          "line": 13,
+          "value": "Table"
+        },
+        "book": {
+          "one": {
+            "file": "/Users/andy/code/src/vim-localorie/test/railsapp/config/locales/en.yml",
+            "line": 11,
+            "value": "Book"
+          },
+          "other": {
+            "file": "/Users/andy/code/src/vim-localorie/test/railsapp/config/locales/en.yml",
+            "line": 12,
+            "value": "Books"
+          }
+        }
+      },
+      "attributes": {
+        "table": {
+          "leg": {
+            "file": "/Users/andy/code/src/vim-localorie/test/railsapp/config/locales/en.yml",
+            "line": 18,
+            "value": "Leg"
+          }
+        },
+        "book": {
+          "title": {
+            "file": "/Users/andy/code/src/vim-localorie/test/railsapp/config/locales/en.yml",
+            "line": 16,
+            "value": "Title"
+          }
+        }
+      }
+    }
+  }
+}
