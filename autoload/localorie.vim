@@ -49,7 +49,6 @@ endfunction
 function! s:parse_yaml(file)
   let dict = {}
 
-  " read into a hidden temp buffer or keep as a list?
   let lines = readfile(a:file)
   let linenr = 0
 
