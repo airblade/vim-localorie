@@ -40,7 +40,7 @@ function! localorie#translate() abort
 endfunction
 
 
-" Echoes the fully qualified key of the current line in a YAML locale file.
+" Returns the fully qualified key of the current line in a YAML locale file.
 function! localorie#expand_key() abort
   let parts = []
 
@@ -53,9 +53,7 @@ function! localorie#expand_key() abort
     call add(parts, matchstr(getline(dedent), '\v[^: ]+'))
   endwhile
 
-  if !empty(parts)
-    echo join(reverse(parts), '.')
-  endif
+  return join(reverse(parts), '.')
 endfunction
 
 

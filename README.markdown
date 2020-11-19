@@ -38,7 +38,7 @@ It would also be nice, in a locale file, to look up locations where a key is use
 
 ### Expand YAML key
 
-In a locale file, call `localorie#expand_key()` to echo the fully qualified key of the current line.  This is handy when you are in the depths of a locale file and have lost track of the current line's scope.
+In a locale file, `:echo localorie#expand_key()` to echo the fully qualified key of the current line.  This is handy when you are in the depths of a locale file and have lost track of the current line's scope.
 
 For example, with your cursor anywhere on the last line:
 
@@ -58,7 +58,7 @@ I recommend mapping the functions in your vimrc.  For example:
 
 ```viml
 nnoremap <silent> <leader>lt :call localorie#translate()<CR>
-nnoremap <silent> <leader>le :call localorie#expand_key()<CR>
+nnoremap <silent> <leader>le :echo localorie#expand_key()<CR>
 ```
 
 
