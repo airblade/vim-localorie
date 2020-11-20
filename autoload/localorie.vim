@@ -6,10 +6,9 @@ let s:translations = {}
 " it looks for a key anywhere on the line.
 function! localorie#translate() abort
   let fq_key = s:key()
-  if !empty(fq_key)
-    let translations = s:translations_for_key(fq_key)
-    call s:display(fq_key, translations)
-  endif
+  if empty(fq_key) | return | endif
+  let translations = s:translations_for_key(fq_key)
+  call s:display(fq_key, translations)
 endfunction
 
 
