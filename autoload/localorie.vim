@@ -49,6 +49,8 @@ function! s:parse_yaml(file)
   let dict = {}
 
   let lines = readfile(a:file)
+  let reversed = reverse(copy(lines))
+  let index_end = len(lines) - 1
   let linenr = 0
 
   for line in lines
@@ -66,9 +68,8 @@ function! s:parse_yaml(file)
     let index = linenr - 1
     while indent > 0
       let indent -= 2
-      let above = lines[:index-1]
-      let i = match(reverse(above), '\v^\s{'.indent.'}\w')
-      let dedent_index = index - i - 1
+      let i = match(reversed, '\v^\s{'.indent.'}\w', -index)
+      let dedent_index = index_end - i
       let dedent_line  = lines[dedent_index]
       let dedent_key   = matchstr(dedent_line, '\v[^: ]+')
       call add(keys, dedent_key)
