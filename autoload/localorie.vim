@@ -63,7 +63,11 @@ function! s:parse_yaml(file)
     let key    = matches[2]
     let value  = matches[3]
 
-    " get parent keys
+    " Get parent keys.
+    " Search backwards for decreasing indents.  In a buffer we can use
+    " search(), as in localorie#expand_key(), but here we have a list.
+    " The list equivalent of search() is match() but this cannot search
+    " backwards, so match against the reversed lines.
     let keys = []
     let index = linenr - 1
     while indent > 0
@@ -76,7 +80,7 @@ function! s:parse_yaml(file)
       let index = dedent_index
     endwhile
 
-    " construct nested dictionaries for parent keys
+    " Construct nested dictionaries for parent keys.
     let d = dict
     for k in reverse(keys)
       if !has_key(d, k)
