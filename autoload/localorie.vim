@@ -68,9 +68,7 @@ function! s:parse_yaml(file)
     while indent > 0
       let indent -= 2
       let i = match(lines, '\v^\s{'.indent.'}\w', index)
-      let dedent_line = lines[i]
-      let dedent_key  = matchstr(dedent_line, '\v[^: ]+')
-      call add(keys, dedent_key)
+      call add(keys, matchstr(lines[i], '\v[^: ]+'))
       let index = i
     endwhile
 
