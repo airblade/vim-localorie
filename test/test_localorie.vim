@@ -33,7 +33,7 @@ function Test_yaml_parse()
 
   let expected = json_decode(join(readfile(s:testdir.'/en.json'),"\n"))
   let actual = call(ParseYaml, [s:railsapp.'/config/locales/en.yml'])
-  call assert_equal(expected, expected)
+  call assert_equal(expected, actual)
 endfunction
 
 
