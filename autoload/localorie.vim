@@ -32,11 +32,20 @@ endfunction
 " Returns a nested dictionary for all Rails i18n locale YAML files combined.
 "
 " Each leaf value is a dictionary with keys 'value', 'line', and 'file'.
-function! localorie#load_translations()
-  let s:translations = {}
-  for file in glob(s:rails_root().'/config/locales/**/*.yml', 1, 1)
-    let s:translations = s:merge(s:translations, s:parse_yaml(file))
-  endfor
+"
+" Optional argument: a locale file (full path)
+" - no argument given: all locale files are read
+" - argument given: the file's existing translations are discarded and it is re-read
+function! localorie#load_translations(...)
+  if a:0
+    let s:translations = s:reject(s:translations, a:1)
+    let s:translations = s:merge(s:translations, s:parse_yaml(a:1))
+  else
+    let s:translations = {}
+    for file in glob(s:rails_root().'/config/locales/**/*.yml', 1, 1)
+      let s:translations = s:merge(s:translations, s:parse_yaml(file))
+    endfor
+  endif
 endfunction
 
 
@@ -279,4 +288,23 @@ function! s:merge(x, y)
           \ : v
   endfor
   return a:x
+endfunction
+
+
+" Removes leaf dictionaries having a 'file' key pointing to the given file value.
+"
+" Note this can leave keys pointing to empty dictionary values.  This is a
+" little untidy but does not matter.
+function s:reject(dict, file)
+  for [k,v] in items(a:dict)
+    " v is always a dictionary
+    if has_key(v, 'file')
+      if v.file == a:file
+        call remove(a:dict, k)
+      endif
+    else
+      call s:reject(v, a:file)
+    endif
+  endfor
+  return a:dict
 endfunction

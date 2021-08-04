@@ -12,6 +12,6 @@ call extend(g:localorie, s:options, 'keep')
 
 augroup localorie
   autocmd!
-  autocmd BufWritePost */config/locales/*.yml call localorie#load_translations()
+  autocmd BufWritePost */config/locales/*.yml call localorie#load_translations(expand('<amatch>'))
 augroup END
 

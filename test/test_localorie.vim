@@ -26,6 +26,18 @@ function Test_merge()
 endfunction
 
 
+function Test_reject()
+  let sid = matchstr(execute('filter autoload/localorie.vim scriptnames'), '\d\+')
+  let Reject = function("<SNR>".sid."_reject")
+
+  call assert_equal({'a':{'file':'/baz/qux'}}, call(Reject, [{'a':{'file':'/baz/qux'}}, '/foo/bar']))
+  call assert_equal({}, call(Reject, [{'a':{'file':'/baz/qux'}}, '/baz/qux']))
+
+  call assert_equal({'a':{'b':{'file':'/baz/qux'}}}, call(Reject, [{'a':{'b':{'file':'/baz/qux'}}}, '/foo/bar']))
+  call assert_equal({'a':{}}, call(Reject, [{'a':{'b':{'file':'/baz/qux'}}}, '/baz/qux']))
+endfunction
+
+
 function Test_yaml_parse()
   let sid = matchstr(execute('filter autoload/localorie.vim scriptnames'), '\d\+')
   let ParseYaml = function("<SNR>".sid."_parse_yaml")
