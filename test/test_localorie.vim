@@ -10,6 +10,7 @@ endfunction
 
 function SetUp()
   call s:reset()
+  call localorie#expand_key()  " force vim to autoload
 endfunction
 
 
@@ -26,8 +27,6 @@ endfunction
 
 
 function Test_yaml_parse()
-  call localorie#expand_key()  " force vim to autoload
-
   let sid = matchstr(execute('filter autoload/localorie.vim scriptnames'), '\d\+')
   let ParseYaml = function("<SNR>".sid."_parse_yaml")
 
