@@ -64,7 +64,7 @@ function! s:parse_yaml(file)
   for line in lines
     let linenr -= 1
 
-    let matches = matchlist(line, '\v^(\s*)([^: ]+): (.+)$')  " key: value
+    let matches = matchlist(line, '\v^(\s*)([^: ]+): ([^&*].+)$')  " key: value (non-anchor, non-alias)
     if empty(matches) | continue | endif
 
     let indent = len(matches[1])

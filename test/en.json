@@ -5,6 +5,20 @@
       "line": 20,
       "value": "Bar"
     },
+    "shared": {
+      "number": {
+        "file": "/Users/andy/code/src/vim-localorie/test/railsapp/config/locales/en.yml",
+        "line": 23,
+        "value": "153"
+      }
+    },
+    "test": {
+      "answer": {
+        "file": "/Users/andy/code/src/vim-localorie/test/railsapp/config/locales/en.yml",
+        "line": 27,
+        "value": "42"
+      }
+    },
     "books": {
       "index": {
         "title": {

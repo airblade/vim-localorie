@@ -18,3 +18,10 @@ en:
         leg: Leg
 
   foo: Bar
+
+  shared: &shared
+    number: 153
+  development: *shared
+  test:
+    <<: *shared
+    answer: 42
