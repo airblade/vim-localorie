@@ -10,14 +10,29 @@
         "file": "/Users/andy/code/src/vim-localorie/test/railsapp/config/locales/en.yml",
         "line": 23,
         "value": "153"
+      },
+      "answer": {
+        "file": "/Users/andy/code/src/vim-localorie/test/railsapp/config/locales/en.yml",
+        "line": 24,
+        "value": "37"
       }
     },
     "test": {
+      "number": {
+        "file": "/Users/andy/code/src/vim-localorie/test/railsapp/config/locales/en.yml",
+        "line": 23,
+        "value": "153"
+      },
       "answer": {
         "file": "/Users/andy/code/src/vim-localorie/test/railsapp/config/locales/en.yml",
-        "line": 27,
+        "line": 28,
         "value": "42"
       }
+    },
+    "name": {
+      "file": "/Users/andy/code/src/vim-localorie/test/railsapp/config/locales/en.yml",
+      "line": 29,
+      "value": "First Last"
     },
     "books": {
       "index": {
@@ -33,6 +48,18 @@
           "line": 6,
           "value": "Book!"
         }
+      }
+    },
+    "development": {
+      "number": {
+        "file": "/Users/andy/code/src/vim-localorie/test/railsapp/config/locales/en.yml",
+        "line": 23,
+        "value": "153"
+      },
+      "answer": {
+        "file": "/Users/andy/code/src/vim-localorie/test/railsapp/config/locales/en.yml",
+        "line": 24,
+        "value": "37"
       }
     },
     "activerecord": {
@@ -71,6 +98,11 @@
           }
         }
       }
+    },
+    "display": {
+      "file": "/Users/andy/code/src/vim-localorie/test/railsapp/config/locales/en.yml",
+      "line": 29,
+      "value": "First Last"
     }
   }
 }

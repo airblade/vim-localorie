@@ -26,6 +26,7 @@ For example, with your cursor somewhere on `.title`:
 - Lazy lookup in controllers
 - `Model.model_name.human`
 - `Model.human_attribute_name`
+- YAML anchors, aliases, and merge keys
 
 #### Unsupported (so far)
 

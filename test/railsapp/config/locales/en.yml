@@ -21,7 +21,10 @@ en:
 
   shared: &shared
     number: 153
+    answer: 37
   development: *shared
   test:
     <<: *shared
     answer: 42
+  name: &name First Last
+  display: *name

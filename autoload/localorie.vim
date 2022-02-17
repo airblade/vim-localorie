@@ -55,42 +55,82 @@ endfunction
 "
 " file - a Rails i18n locale YAML file
 function! s:parse_yaml(file)
-  let dict = {}
+  let lines = readfile(a:file)
 
-  let lines     = reverse(readfile(a:file))
-  let linecount = len(lines)
-  let linenr    = len(lines) + 1
-
+  " Get fully qualified key for each line.
+  let fqkeys = []
+  let ancestors = []
+  let last_indent = -1
+  let last_key = ''
   for line in lines
-    let linenr -= 1
+    let matches = matchlist(line, '\v^(\s*)([^: #]+):')  " key:
 
-    let matches = matchlist(line, '\v^(\s*)([^: ]+): ([^&*].+)$')  " key: value (non-anchor, non-alias)
-    if empty(matches) | continue | endif
+    if empty(matches)
+      call add(fqkeys, [])
+      continue
+    endif
 
     let indent = len(matches[1])
-    let key    = matches[2]
-    let value  = matches[3]
-
-    " Get parent keys.
-    let keys = []
-    let index = linecount - linenr
-    while indent > 0
-      let indent -= 2
-      let i = match(lines, '\v^\s{'.indent.'}\w', index)
-      call add(keys, matchstr(lines[i], '\v[^: ]+'))
-      let index = i
-    endwhile
-
-    " Construct nested dictionaries for parent keys.
-    let d = dict
-    for k in reverse(keys)
-      if !has_key(d, k)
-        let d[k] = {}
+    if indent < last_indent
+      call remove(ancestors, (indent - last_indent)/2, -1)
+    elseif indent > last_indent
+      if !empty(last_key)
+        call add(ancestors, last_key)
       endif
-      let d = d[k]
+    endif
+
+    let key = matches[2]
+    call add(fqkeys, add(copy(ancestors),key))
+
+    let last_key = key
+    let last_indent = indent
+  endfor
+
+  " Populate dictionary.
+  let dict = {}
+  let anchors = {}
+  let linenr = 0
+  for line in lines
+    let linenr += 1
+    let matches = matchlist(line, '\v^\s*([^: #]+): (.+)$')  " key: value
+
+    if empty(matches) | continue | endif
+
+    let key = matches[1]
+    let parents = key == '<<' ? fqkeys[linenr - 1][:-2] : fqkeys[linenr - 1]
+    let d = dict
+    for key in parents
+      if !has_key(d, key)
+        let d[key] = {}
+      endif
+      let d = d[key]
     endfor
 
-    let d[key] = { 'value': value, 'line': linenr, 'file': a:file }
+    let value = matches[2]
+    if value[0] == '&'
+      let matches = matchlist(value, '\v\&(\w+)( (.+))?$')
+      let anchor = matches[1]
+      if !empty(matches[3])  " scalar anchor
+        let d.value = matches[3]
+        let d.line = linenr
+        let d.file = a:file
+      endif
+      let anchors[anchor] = fqkeys[linenr - 1]  " alias: fqkey
+
+    elseif value[0] == '*'
+      let anchor = value[1:]
+      let anchor_fqkey = anchors[anchor]
+      let anchor_d = dict
+      for key in anchor_fqkey
+        let anchor_d = anchor_d[key]
+      endfor
+      call extend(d, deepcopy(anchor_d))
+
+    else
+      let d.value = value
+      let d.line = linenr
+      let d.file = a:file
+    endif
   endfor
 
   return dict
