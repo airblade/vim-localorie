@@ -1,6 +1,6 @@
 ## vim-localorie
 
-Localorie is a Vim plugin which makes working with Rails i18n locale files a little easier.
+Localorie is a Vim plugin which makes working with Rails i18n YAML locale files a little easier.
 
 
 ### Look up translations
@@ -32,7 +32,6 @@ For example, with your cursor somewhere on `.title`:
 
 - `:scope` and `:default` options
 - Localisation keys.
-- Ruby locale files
 
 It would also be nice, in a locale file, to look up locations where a key is used.
 
