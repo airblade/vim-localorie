@@ -92,7 +92,7 @@ function! s:parse_yaml(file)
   let linenr = 0
   for line in lines
     let linenr += 1
-    let matches = matchlist(line, '\v^\s*([^: #]+): (.+)$')  " key: value
+    let matches = matchlist(line, '\v^\s*([^: #]+):\s+(.+)$')  " key: value
 
     if empty(matches) | continue | endif
 
