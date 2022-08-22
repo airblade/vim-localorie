@@ -30,11 +30,17 @@ function Test_reject()
   let sid = matchstr(execute('filter autoload/localorie.vim scriptnames'), '\d\+')
   let Reject = function("<SNR>".sid."_reject")
 
-  call assert_equal({'a':{'file':'/baz/qux'}}, call(Reject, [{'a':{'file':'/baz/qux'}}, '/foo/bar']))
-  call assert_equal({}, call(Reject, [{'a':{'file':'/baz/qux'}}, '/baz/qux']))
+  let dict = {'a':{'file':'/baz/qux','line':42,'value':'x'}}
+  call assert_equal(dict, call(Reject, [dict, '/foo/bar']))
+  call assert_equal({},   call(Reject, [dict, '/baz/qux']))
 
-  call assert_equal({'a':{'b':{'file':'/baz/qux'}}}, call(Reject, [{'a':{'b':{'file':'/baz/qux'}}}, '/foo/bar']))
-  call assert_equal({'a':{}}, call(Reject, [{'a':{'b':{'file':'/baz/qux'}}}, '/baz/qux']))
+  let dict = {'a':{'b':{'file':'/baz/qux','line':42,'value':'x'}}}
+  call assert_equal(dict,     call(Reject, [dict, '/foo/bar']))
+  call assert_equal({'a':{}}, call(Reject, [dict, '/baz/qux']))
+
+  let dict = {'a':{'file':{'file':'/baz/qux','line':42,'value':'x'}}}
+  call assert_equal(dict,     call(Reject, [dict, '/foo/bar']))
+  call assert_equal({'a':{}}, call(Reject, [dict, '/baz/qux']))
 endfunction
 
 

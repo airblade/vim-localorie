@@ -160,7 +160,7 @@ function! s:translations_for_key(fq_key) abort
 
     if miss | continue | endif
 
-    if has_key(dict, 'file')  " exact translation
+    if s:leaf_node(dict)  " exact translation
       call add(results, {
             \   'filename': dict.file,
             \   'lnum':     dict.line,
@@ -322,14 +322,21 @@ function! s:merge(x, y)
 endfunction
 
 
-" Removes leaf dictionaries having a 'file' key pointing to the given file value.
+let s:leaf_keys = ['file', 'line', 'value']
+
+function s:leaf_node(dict)
+  return sort(copy(keys(a:dict))) == s:leaf_keys
+endfunction
+
+
+" Removes translation leaf dictionaries having a 'file' key pointing to the given file value.
 "
 " Note this can leave keys pointing to empty dictionary values.  This is a
 " little untidy but does not matter.
 function s:reject(dict, file)
   for [k,v] in items(a:dict)
     " v is always a dictionary
-    if has_key(v, 'file')
+    if s:leaf_node(v)
       if v.file == a:file
         call remove(a:dict, k)
       endif
