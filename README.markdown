@@ -38,7 +38,7 @@ It would also be nice, in a locale file, to look up locations where a key is use
 
 ### Expand YAML key
 
-In a locale file, `:echo localorie#expand_key()` to echo the fully qualified key of the current line.  This is handy when you are in the depths of a locale file and have lost track of the current line's scope.
+In a locale file, `:echo localorie#expand_key()` to echo the fully qualified key (including the locale prefix) of the current line.  This is handy when you are in the depths of a locale file and have lost track of the current line's scope.
 
 For example, with your cursor anywhere on the last line:
 
@@ -50,6 +50,8 @@ en:
 ```
 
 – calling `localorie#expand_key()` will echo `en.foo.bar.baz`.
+
+Calling `localorie#expand_key_without_locale()` will echo `foo.bar.baz`.
 
 
 ### Mappings

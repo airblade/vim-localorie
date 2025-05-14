@@ -12,7 +12,8 @@ function! localorie#translate() abort
 endfunction
 
 
-" Returns the fully qualified key of the current line in a YAML locale file.
+" Returns the fully qualified key (including the locale prefix) of the current
+" line in a YAML locale file.
 function! localorie#expand_key() abort
   let parts = []
 
@@ -26,6 +27,14 @@ function! localorie#expand_key() abort
   endwhile
 
   return join(reverse(parts), '.')
+endfunction
+
+
+" Returns the fully qualified key (excluding the locale prefix) of the current
+" line in a YAML locale file.
+function! localorie#expand_key_without_locale() abort
+  let fq_key = localorie#expand_key()
+  return join(split(fq_key, '[.]')[1:], '.')
 endfunction
 
 

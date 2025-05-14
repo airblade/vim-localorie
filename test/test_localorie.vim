@@ -61,6 +61,13 @@ function Test_expand_key()
 endfunction
 
 
+function Test_expand_key_without_locale()
+  execute 'edit' s:railsapp.'/config/locales/en.yml'
+  normal 4G
+  call assert_equal('books.index.title', localorie#expand_key_without_locale())
+endfunction
+
+
 function Test_translate_fq_key_view()
   execute 'edit' s:railsapp.'/app/views/books/index.html.haml'
   for line in [1, 2]
