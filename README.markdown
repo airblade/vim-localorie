@@ -32,6 +32,7 @@ For example, with your cursor somewhere on `.title`:
 
 - `:scope` and `:default` options
 - Localisation keys.
+- Quoting.  E.g. if a multi-line scalar value has a line beginning with something that looks like a YAML key, it will be treated as a YAML key and break the plugin (#9), even if the value is quoted.
 
 It would also be nice, in a locale file, to look up locations where a key is used.
 
