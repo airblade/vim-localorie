@@ -45,7 +45,7 @@ endfunction
 " Optional argument: a locale file (full path)
 " - no argument given: all locale files are read
 " - argument given: the file's existing translations are discarded and it is re-read
-function! localorie#load_translations(...)
+function! localorie#load_translations(...) abort
   if a:0
     let s:translations = s:reject(s:translations, a:1)
     let s:translations = s:merge(s:translations, s:parse_yaml(a:1))
@@ -342,7 +342,7 @@ endfunction
 "
 " Note this can leave keys pointing to empty dictionary values.  This is a
 " little untidy but does not matter.
-function s:reject(dict, file)
+function s:reject(dict, file) abort
   for [k,v] in items(a:dict)
     " v is always a dictionary
     if s:leaf_node(v)
